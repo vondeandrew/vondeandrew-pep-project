@@ -18,5 +18,5 @@ public class MessageService {
         this.messageDAO = messageDAO;
     }
 
-    public
+    
 }
