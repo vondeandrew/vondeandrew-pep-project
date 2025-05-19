@@ -19,11 +19,17 @@ public class AccountService {
 
     Account login(String userName, String password)
     {
-        return null;
+        return this.login(userName, password);
     }
 
     Account insertAccount(Account newAccount)
     {
-        return null;
+        String testUser = newAccount.getUsername();
+        String testPass = newAccount.getPassword();
+        if(testUser.trim().equals("") || testPass.length() < 4 || this.accountDAO.isIn(testUser))
+        {
+            return null;
+        }
+        return this.accountDAO.insertAccount(newAccount);
     }
 }

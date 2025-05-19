@@ -21,6 +21,11 @@ public class AccountDAO {
 
             preparedStatement.setString(1, userName);
             preparedStatement.setString(2,password);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            Account returnAccount = new Account(rs.getInt("account_id"), rs.getString("username"), rs.getString("lastname"));
+
+            return returnAccount;
         } catch(SQLException e){
 
         }
@@ -28,8 +33,31 @@ public class AccountDAO {
     }
 
     //creat account
-    Account insertAccount(Account newAccount)
+    public Account insertAccount(Account newAccount)
     {
         return null;
+    }
+
+    public Boolean isIn(String userCheck)
+    {
+        Connection newConnection = ConnectionUtil.getConnection();
+
+        String request = "SELECT * FROM Message;";
+
+        try{
+            PreparedStatement newStatment = newConnection.prepareStatement(request);
+            ResultSet rs = newStatment.executeQuery();
+
+            while(rs.next())
+            {
+                if(userCheck.equals(rs.getString("username")))
+                {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+
+        }
+        return false;
     }
 }
