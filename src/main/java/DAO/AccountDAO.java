@@ -10,7 +10,7 @@ import java.util.List;
 public class AccountDAO {
     
     //login
-    Account login(String userName, String password)
+    public Account login(String userName, String password)
     {
         Connection newConnection = ConnectionUtil.getConnection();
 
@@ -23,7 +23,8 @@ public class AccountDAO {
             preparedStatement.setString(2,password);
 
             ResultSet rs = preparedStatement.executeQuery();
-            Account returnAccount = new Account(rs.getInt("account_id"), rs.getString("username"), rs.getString("lastname"));
+            rs.next();
+            Account returnAccount = new Account(rs.getInt("account_id"), rs.getString("username"), rs.getString("password"));
 
             return returnAccount;
         } catch(SQLException e){

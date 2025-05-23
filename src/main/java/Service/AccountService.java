@@ -17,9 +17,9 @@ public class AccountService {
         this.accountDAO = accountDAO;
     }
 
-    Account login(String userName, String password)
+    public Account login(String userName, String password)
     {
-        return this.login(userName, password);
+        return this.accountDAO.login(userName, password);
     }
 
     Account insertAccount(Account newAccount)
