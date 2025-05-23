@@ -93,7 +93,9 @@ public class SocialMediaController {
 
     private void getMessageByID (Context ctx)
     {
-
+        String parm = ctx.pathParam("account_id");
+        int idNum = Integer.parseInt(parm);
+        ctx.json(messServices.getAllMessagesByID(idNum));
     }
 
     private void login (Context ctx) throws JsonProcessingException

@@ -119,7 +119,7 @@ public class MessageDAO {
             preparedStatement.setInt(2,id);
 
             preparedStatement.executeUpdate();
-            
+
             return returnMessage;
         } catch  (SQLException e) {
 
@@ -127,7 +127,7 @@ public class MessageDAO {
         return null;
     }
 
-    public List<Message> getAllMessagesByID(Account check)
+    public List<Message> getAllMessagesByID(int check)
     {
         List<Message> messages = new ArrayList<>();
 
@@ -137,7 +137,7 @@ public class MessageDAO {
 
         try{
             PreparedStatement newStatment = newConnection.prepareStatement(request);
-            newStatment.setInt(1,check.getAccount_id());
+            newStatment.setInt(1,check);
             ResultSet rs = newStatment.executeQuery();
 
             while(rs.next())

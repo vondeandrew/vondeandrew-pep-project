@@ -55,7 +55,7 @@ public class MessageService {
         return this.messageDAO.updateMessageByID(id, newMessage);
     }
 
-    public List<Message> getAllMessagesByID(Account check)
+    public List<Message> getAllMessagesByID(int check)
     {
         return this.messageDAO.getAllMessagesByID(check);
     }
