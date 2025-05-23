@@ -101,6 +101,13 @@ public class SocialMediaController {
         ObjectMapper newmapp = new ObjectMapper();
         Account newAccount = newmapp.readValue(ctx.body(), Account.class);
         Account logedIn = accountServices.login(newAccount.getUsername(), newAccount.getPassword());
-        ctx.json(logedIn);
+        if(logedIn != null)
+        {
+            ctx.json(logedIn);  
+        }
+        else
+        {
+            ctx.status(401);
+        }
     }
 }
