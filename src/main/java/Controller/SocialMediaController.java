@@ -3,10 +3,14 @@ package Controller;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+import java.util.Collections;
 import java.util.List;
+
+import org.h2.util.json.JSONObject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 
 import DAO.AccountDAO;
 import DAO.MessageDAO;
@@ -83,7 +87,16 @@ public class SocialMediaController {
     {
         String parm = ctx.pathParam("message_id");
         int idNum = Integer.parseInt(parm);
-        ctx.json(messServices.deleteMessageByID(idNum));
+        Message deletedmessage = messServices.deleteMessageByID(idNum);
+
+        if(deletedmessage != null)
+        {
+            ctx.json(deletedmessage);
+        } else {
+            
+            ctx.json(Collections.emptyMap());
+        }
+        
     }
 
     private void updateMessagebyIDHandler (Context ctx)
@@ -95,6 +108,7 @@ public class SocialMediaController {
     {
         String parm = ctx.pathParam("account_id");
         int idNum = Integer.parseInt(parm);
+        
         ctx.json(messServices.getAllMessagesByID(idNum));
     }
 
