@@ -71,9 +71,18 @@ public class SocialMediaController {
 
     }
 
-    private void postMessageHandler (Context ctx)
+    private void postMessageHandler (Context ctx) throws JsonProcessingException
     {
+        ObjectMapper newmapp = new ObjectMapper();
+        Message newMessage = newmapp.readValue(ctx.body(), Message.class);
+        Message testmessage = messServices.insertMessage(newMessage);
 
+        if(testmessage != null){
+
+        }
+        else{
+            ctx.status(400); 
+        }
     }
 
     private void getMessageByIDHandler (Context ctx)
@@ -99,9 +108,21 @@ public class SocialMediaController {
         
     }
 
-    private void updateMessagebyIDHandler (Context ctx)
+    private void updateMessagebyIDHandler (Context ctx) throws JsonProcessingException
     {
+        String parm = ctx.pathParam("message_id");
+        int idNum = Integer.parseInt(parm);
+        ObjectMapper newmapp = new ObjectMapper();
+        Message newMessage = newmapp.readValue(ctx.body(), Message.class);
+        Message updatedMessage = messServices.updateMessageByID(idNum, newMessage.getMessage_text());
 
+        if(updatedMessage != null)
+        {
+            ctx.json(updatedMessage);
+        }
+        else{
+            ctx.status(400); 
+        }
     }
 
     private void getMessageByID (Context ctx)

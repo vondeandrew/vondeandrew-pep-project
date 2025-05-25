@@ -120,7 +120,7 @@ public class MessageDAO {
 
             preparedStatement.executeUpdate();
 
-            return returnMessage;
+            return returnMessage = getMessageByID(id);
         } catch  (SQLException e) {
 
         }

@@ -47,7 +47,8 @@ public class MessageService {
 
     public Message updateMessageByID(int id, String newMessage)
     {
-        if(newMessage.trim().equals("") || newMessage.length() > 255)
+        if(newMessage.trim().equals("") || newMessage.length() > 255 || getAllMessagesByID(id).isEmpty())
+        
         {
             return null;
         }
