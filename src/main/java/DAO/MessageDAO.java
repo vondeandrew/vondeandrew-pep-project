@@ -45,7 +45,26 @@ public class MessageDAO {
         preparedStatement.setLong(3, newmesage.getTime_posted_epoch());
 
         preparedStatement.executeUpdate();
-        return newmesage;
+
+        request = "SELECT * FROM Message WHERE posted_by = ? AND message_text = ? AND time_posted_epoch = ?;";
+
+        preparedStatement = newConnection.prepareStatement(request);
+
+        preparedStatement.setInt(1, newmesage.getPosted_by());
+        preparedStatement.setString(2, newmesage.getMessage_text());
+        preparedStatement.setLong(3, newmesage.getTime_posted_epoch());
+
+        ResultSet rs = preparedStatement.executeQuery();
+
+        while(rs.next())
+        {
+        Message returnMessage = new Message(rs.getInt("message_id"),
+        rs.getInt("posted_by"), 
+        rs.getString("message_text"), 
+        rs.getLong("time_posted_epoch"));
+
+        return returnMessage;
+        }
         } catch (SQLException e)
         {
 
@@ -56,6 +75,7 @@ public class MessageDAO {
     public Message getMessageByID(int id)
     {
         List<Message> messages = new ArrayList<>();
+        Message returnMessage = null;
         Connection newConnection = ConnectionUtil.getConnection();
 
         String request = "SELECT * FROM Message WHERE message_id = ?;";
@@ -65,24 +85,28 @@ public class MessageDAO {
             preparedStatement.setInt(1, id);
 
             ResultSet rs = preparedStatement.executeQuery();
+
+            if(rs == null)
+            {
+                return null;
+            }
+            
             while(rs.next())
             {
-            Message returnMessage = new Message(rs.getInt("message_id"),
-             rs.getInt("posted_by"), 
-             rs.getString("message_text"), 
-             rs.getLong("time_posted_epoch"));
+            returnMessage = new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"), rs.getLong("time_posted_epoch"));
+             //messages.add(returnMessage);
             return returnMessage;
             }
         } catch (SQLException e)
         {
-
+            e.printStackTrace();
         }
-        Message BlankMessage = new Message();
-        return BlankMessage;
+        return returnMessage;
     }
 
     public Message deleteMessageByID(int id)
     {
+        List<Message> messages = new ArrayList<>();
         Message returnMessage = getMessageByID(id);
 
         if(returnMessage != null)
@@ -103,11 +127,12 @@ public class MessageDAO {
                 
             }
         }
-        return null;
+        return returnMessage;
     }
 
     public Message updateMessageByID(int id, String newMessage)
     {
+        List<Message> messages = new ArrayList<>();
         Message returnMessage = getMessageByID(id);
         Connection newConnection = ConnectionUtil.getConnection();
 

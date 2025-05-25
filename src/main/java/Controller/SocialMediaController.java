@@ -3,6 +3,7 @@ package Controller;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -66,9 +67,18 @@ public class SocialMediaController {
         ctx.json(messages);
     }
 
-    private void creatAccount (Context ctx)
+    private void creatAccount (Context ctx) throws JsonProcessingException
     {
+        ObjectMapper newmapp = new ObjectMapper();
+        Account newAccount = newmapp.readValue(ctx.body(), Account.class);
+        Account tesAccount = accountServices.insertAccount(newAccount);
 
+        if(tesAccount != null){
+            ctx.json(tesAccount);
+        }
+        else{
+            ctx.status(400); 
+        }
     }
 
     private void postMessageHandler (Context ctx) throws JsonProcessingException
@@ -78,7 +88,7 @@ public class SocialMediaController {
         Message testmessage = messServices.insertMessage(newMessage);
 
         if(testmessage != null){
-
+            ctx.json(testmessage);
         }
         else{
             ctx.status(400); 
@@ -102,8 +112,8 @@ public class SocialMediaController {
         {
             ctx.json(deletedmessage);
         } else {
-            
-            ctx.json(Collections.emptyMap());
+            List<Message> empty = new ArrayList<>();
+            ctx.json(empty);
         }
         
     }
@@ -129,7 +139,10 @@ public class SocialMediaController {
     {
         String parm = ctx.pathParam("account_id");
         int idNum = Integer.parseInt(parm);
-        
+        if(messServices.getAllMessagesByID(idNum) == null)
+        {
+            ctx.status(200);
+        }
         ctx.json(messServices.getAllMessagesByID(idNum));
     }
 

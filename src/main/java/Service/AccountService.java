@@ -22,7 +22,7 @@ public class AccountService {
         return this.accountDAO.login(userName, password);
     }
 
-    Account insertAccount(Account newAccount)
+    public Account insertAccount(Account newAccount)
     {
         String testUser = newAccount.getUsername();
         String testPass = newAccount.getPassword();

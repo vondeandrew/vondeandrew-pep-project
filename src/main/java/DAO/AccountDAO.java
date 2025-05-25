@@ -36,6 +36,24 @@ public class AccountDAO {
     //creat account
     public Account insertAccount(Account newAccount)
     {
+        Connection newConnection = ConnectionUtil.getConnection();
+
+        String request = "INSERT INTO Account(username, password) values(?, ?);";
+
+        try {
+            PreparedStatement preparedStatement = newConnection.prepareStatement(request);
+
+            preparedStatement.setString(1, newAccount.getUsername());
+            preparedStatement.setString(2, newAccount.getPassword());
+
+            preparedStatement.executeUpdate();
+
+            return login(newAccount.getUsername(), newAccount.getPassword());
+        } catch (SQLException e)
+        {
+
+        }
+
         return null;
     }
 
