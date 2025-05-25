@@ -75,7 +75,6 @@ public class MessageDAO {
     public Message getMessageByID(int id)
     {
         List<Message> messages = new ArrayList<>();
-        Message returnMessage = null;
         Connection newConnection = ConnectionUtil.getConnection();
 
         String request = "SELECT * FROM Message WHERE message_id = ?;";
@@ -93,7 +92,10 @@ public class MessageDAO {
             
             while(rs.next())
             {
-            returnMessage = new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"), rs.getLong("time_posted_epoch"));
+                Message returnMessage = new Message(rs.getInt("message_id"),
+                rs.getInt("posted_by"), 
+                rs.getString("message_text"), 
+                rs.getLong("time_posted_epoch"));
              //messages.add(returnMessage);
             return returnMessage;
             }
@@ -101,7 +103,7 @@ public class MessageDAO {
         {
             e.printStackTrace();
         }
-        return returnMessage;
+        return null;
     }
 
     public Message deleteMessageByID(int id)
